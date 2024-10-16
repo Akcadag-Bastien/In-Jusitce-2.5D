@@ -79,7 +79,8 @@ public class TurnManager : MonoBehaviour
             }
 
             // Wait for a short delay to simulate AI decision making
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.5f); /// /!\ IF THIS VALUE IS TOO SMALL, TWO CHARACTERS WILL BE ABLE TO MOVE TO THE SAME TILE /!\
+            /// /!\ THIS IS BECAUSE THE GridManager DOES NOT HAVE THE TIME TO SET THE TILE AS "OCCUPIED" /!\
 
             // After the enemy moves, end their turn
             EndEnemyTurn();
