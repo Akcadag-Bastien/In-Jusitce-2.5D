@@ -6,46 +6,43 @@ public class DefaultEnemyAI : MonoBehaviour
 {
     public void EnemyAI()
     {
-        // Generate a random direction (up, down, left, or right)
-        Vector3[] directions = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right };
-        Vector3 randomDirection = directions[Random.Range(0, directions.Length)];
+        // Define potential movement directions (up, down, left, right)
+        Vector3[] possibleDirections = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right };
 
-        // Calculate the target position
-        Vector3 targetPosition = transform.position + randomDirection;
-        Vector2 targetGridPos = new Vector2(Mathf.Floor(targetPosition.x), Mathf.Floor(targetPosition.z));
+        List<Vector3> availableDirections = new List<Vector3>();
 
-        // Check if the target tile is occupied
-        if (GridManager.instance.IsTileOccupied(targetGridPos))
+        // Get the current grid position of the enemy
+        Vector2 currentGridPos = new Vector2(Mathf.Floor(transform.position.x), Mathf.Floor(transform.position.z));
+
+        // Check all directions to see if the tile is available
+        foreach (Vector3 direction in possibleDirections)
         {
-            // If occupied, try the opposite direction
-            Vector3 oppositeDirection = -randomDirection;
-            targetPosition = transform.position + oppositeDirection;
-            targetGridPos = new Vector2(Mathf.Floor(targetPosition.x), Mathf.Floor(targetPosition.z));
+            Vector2 targetGridPos = currentGridPos + new Vector2(direction.x, direction.z);
 
-            // Only move if the opposite tile is free
-            if (!GridManager.instance.IsTileOccupied(targetGridPos))
+            // Check if the tile is within the grid bounds and not occupied
+            if (!GridManager.instance.IsTileOccupied(targetGridPos) &&
+                targetGridPos.x >= 0 && targetGridPos.x < GridManager.instance.GetGridWidth() &&
+                targetGridPos.y >= 0 && targetGridPos.y < GridManager.instance.GetGridHeight())
             {
-                MoveEnemy(oppositeDirection);
+                availableDirections.Add(direction); // Add the available direction
             }
-            else
+        }
+
+        // If there are any available directions, choose one randomly
+        if (availableDirections.Count > 0)
+        {
+            Vector3 randomDirection = availableDirections[Random.Range(0, availableDirections.Count)];
+
+            // Call the MovePlayer function from GridMovement to move the enemy in the chosen direction
+            GridMovement gridMovement = GetComponent<GridMovement>();
+            if (gridMovement != null && !gridMovement.isMoving)
             {
-                Debug.Log("No valid moves available for this enemy.");
+                StartCoroutine(gridMovement.MovePlayer(randomDirection));
             }
         }
         else
         {
-            // If the initial target tile is free, move in the original random direction
-            MoveEnemy(randomDirection);
-        }
-    }
-
-    private void MoveEnemy(Vector3 direction)
-    {
-        // Call the MovePlayer function from GridMovement to move the enemy
-        GridMovement gridMovement = GetComponent<GridMovement>();
-        if (gridMovement != null && !gridMovement.isMoving)
-        {
-            StartCoroutine(gridMovement.MovePlayer(direction));
+            Debug.Log("No available moves for the enemy!");
         }
     }
 }
