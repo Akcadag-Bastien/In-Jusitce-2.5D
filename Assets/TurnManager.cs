@@ -15,6 +15,14 @@ public class TurnManager : MonoBehaviour
     private int currentPlayerIndex = 0;
     private int currentEnemyIndex = 0;
 
+    public enum FirstTurn
+    {
+        Player,
+        Enemy
+    }
+
+    [SerializeField] private FirstTurn firstTurn; // Declare a variable to store the starting turn
+
     private void Awake()
     {
         if (instance == null)
@@ -32,10 +40,18 @@ public class TurnManager : MonoBehaviour
         players = new List<GameObject>(GameObject.FindGameObjectsWithTag("Player"));
         enemies = new List<GameObject>(GameObject.FindGameObjectsWithTag("Enemy"));
 
-        currentTurn = TurnState.PlayerTurn; // Start with the player's turn
+        if (firstTurn == FirstTurn.Player)
+        {
+            currentTurn = TurnState.PlayerTurn; // Start with the player's turn
+        }
+        else if (firstTurn == FirstTurn.Enemy)
+        {
+            currentTurn = TurnState.EnemyTurn;
+            StartCoroutine(EnemyTurn());
+        }
     }
 
-    // Method to be called when the player ends their turn
+    // Call this method when the player decides to end their turn (with a button or with the shortcut)
     public void EndPlayerTurn()
     {
         if (currentTurn == TurnState.PlayerTurn)
@@ -50,7 +66,7 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    // Method for ending the enemy's turn
+    // Call this method ONLY once all enemies have taken their turn
     public void EndEnemyTurn()
     {
         currentEnemyIndex++;
@@ -78,11 +94,10 @@ public class TurnManager : MonoBehaviour
                 enemyAI.EnemyAI();
             }
 
-            // Wait for a short delay to simulate AI decision making
-            yield return new WaitForSeconds(0.5f); /// /!\ IF THIS VALUE IS TOO SMALL, TWO CHARACTERS WILL BE ABLE TO MOVE TO THE SAME TILE /!\
-            /// /!\ THIS IS BECAUSE THE GridManager DOES NOT HAVE THE TIME TO SET THE TILE AS "OCCUPIED" /!\
+            // Impose a delay to give time for the player to understand the enemy movements and prevent a bug
+            yield return new WaitForSeconds(0.5f); // Adjust delay to prevent overlapping on the same tile
 
-            // After the enemy moves, end their turn
+            // Once all enemies have moved, end their turn
             EndEnemyTurn();
         }
     }

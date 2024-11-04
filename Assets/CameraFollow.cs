@@ -11,6 +11,15 @@ public class CameraFollow : MonoBehaviour
     public float smoothSpeed = 0.125f; // Speed for smooth camera movement
     private Vector3 offset => new Vector3(zoom, zoom, -zoom); // Offset to maintain distance from the target
 
+
+
+    private void Start()
+    {
+        transform.position = new Vector3(2,4,-3);
+    }
+
+
+
     // Update is called once per frame
     public void FollowTarget()
     {
