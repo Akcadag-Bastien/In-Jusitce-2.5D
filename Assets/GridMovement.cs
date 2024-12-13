@@ -43,34 +43,34 @@ public class GridMovement : MonoBehaviour
             // Handle player movement with input
             if (Input.GetKey(moveUp) && !isMoving)
             {
-                TurnManager.instance.PlayerMadeMove();                
                 StartCoroutine(MovePlayer(Vector3.forward));
                 Debug.Log(gameData.playerMove);
                 Debug.Log(gameData.playerMaxMove);
+                TurnManager.instance.PlayerMadeMove();
             }
 
             else if (Input.GetKey(moveLeft) && !isMoving)
             {
-                TurnManager.instance.PlayerMadeMove();                
                 StartCoroutine(MovePlayer(Vector3.left));
                 Debug.Log(gameData.playerMove);
                 Debug.Log(gameData.playerMaxMove);
+                TurnManager.instance.PlayerMadeMove();
             }
 
             else if (Input.GetKey(moveDown) && !isMoving)
             {
-                TurnManager.instance.PlayerMadeMove();
                 StartCoroutine(MovePlayer(Vector3.back));
                 Debug.Log(gameData.playerMove);
                 Debug.Log(gameData.playerMaxMove);
+                TurnManager.instance.PlayerMadeMove();
             }
 
             else if (Input.GetKey(moveRight) && !isMoving)
             {
-                TurnManager.instance.PlayerMadeMove();
                 StartCoroutine(MovePlayer(Vector3.right));
                 Debug.Log(gameData.playerMove);
                 Debug.Log(gameData.playerMaxMove);
+                TurnManager.instance.PlayerMadeMove();
             }
 
         }
@@ -103,7 +103,6 @@ public class GridMovement : MonoBehaviour
             targetGridPos.y < 0 || targetGridPos.y >= GridManager.instance.GetGridHeight())  
         {
             TurnManager.DelayBetweenTurns();
-            gameData.playerMove--;
             isMoving = false;
             Debug.Log("Tile out of range !");
             yield break;
@@ -113,7 +112,6 @@ public class GridMovement : MonoBehaviour
         if (GridManager.instance.IsTileOccupied(targetGridPos))
         {
             TurnManager.DelayBetweenTurns();
-            gameData.playerMove--;
             isMoving = false;
             Debug.Log("Tile is already occupied !");
             yield break;
@@ -158,6 +156,10 @@ public class GridMovement : MonoBehaviour
                 gameData.playerMove++;
                 
             }
+        }
+        else
+        {
+            gameData.playerMove = 0;
         }
 
         // Update the player's position and mark the new tile as occupied

@@ -251,7 +251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMove: 0
-  playerMaxMove: 1
+  playerMaxMove: 2
 --- !u!4 &237297138
 Transform:
   m_ObjectHideFlags: 0
@@ -990,6 +990,11 @@ PrefabInstance:
       propertyPath: moveUp
       value: 273
       objectReference: {fileID: 0}
+    - target: {fileID: 1834739720945638879, guid: 89f187d07345fa24fb6ddb1acd717526,
+        type: 3}
+      propertyPath: gameData
+      value: 
+      objectReference: {fileID: 237297137}
     - target: {fileID: 1834739720945638879, guid: 89f187d07345fa24fb6ddb1acd717526,
         type: 3}
       propertyPath: isMoving
