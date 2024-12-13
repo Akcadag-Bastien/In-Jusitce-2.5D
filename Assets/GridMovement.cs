@@ -159,7 +159,7 @@ public class GridMovement : MonoBehaviour
         }
         else
         {
-            gameData.playerMove = 0;
+            gameData.playerMove = 1;
         }
 
         // Update the player's position and mark the new tile as occupied

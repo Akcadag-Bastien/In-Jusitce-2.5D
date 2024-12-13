@@ -112,13 +112,13 @@ public class TurnManager : MonoBehaviour
     public void PlayerMadeMove()
     {
             // Use the gameData instance to access playerMove and playerMaxMove
-        if (gameData.playerMove >= gameData.playerMaxMove-1)
+        if (gameData.playerMove >= gameData.playerMaxMove)
             {
 
                 // End turn if playerMove is already equal to or exceeds playerMaxMove
 
                 EndPlayerTurn();
-                gameData.playerMove = 0;
+                gameData.playerMove = 1;
             }
     }
 
