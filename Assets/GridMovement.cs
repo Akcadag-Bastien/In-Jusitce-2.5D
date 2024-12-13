@@ -14,8 +14,17 @@ public class GridMovement : MonoBehaviour
     [SerializeField] KeyCode moveRight = KeyCode.D;
     [SerializeField] private bool isPlayer; // True if this is the player's character, false for enemies
 
+    public GameData gameData; // Assign in Inspector or find it in Start()
+    public TurnManager TurnManager; // Assign in Inspector or find it in Start()
+
     void Start()
     {
+
+         if (gameData == null)
+        {
+            gameData = FindObjectOfType<GameData>();
+        }
+
         // Mark the initial position as occupied when the game starts
         Vector2 gridPosition = new Vector2(Mathf.Floor(transform.position.x), Mathf.Floor(transform.position.z));
         GridManager.instance.OccupyTile(gridPosition, this.gameObject);
@@ -26,20 +35,44 @@ public class GridMovement : MonoBehaviour
         if (isPlayer)
         {
             // Only allow player movement during the player's turn
-            if (!TurnManager.instance.IsPlayerTurn()) return;
+            if (!TurnManager.instance.IsPlayerTurn()) 
+            {
+                return;
+            }
 
             // Handle player movement with input
             if (Input.GetKey(moveUp) && !isMoving)
+            {
+                TurnManager.instance.PlayerMadeMove();                
                 StartCoroutine(MovePlayer(Vector3.forward));
+                Debug.Log(gameData.playerMove);
+                Debug.Log(gameData.playerMaxMove);
+            }
 
             else if (Input.GetKey(moveLeft) && !isMoving)
+            {
+                TurnManager.instance.PlayerMadeMove();                
                 StartCoroutine(MovePlayer(Vector3.left));
+                Debug.Log(gameData.playerMove);
+                Debug.Log(gameData.playerMaxMove);
+            }
 
             else if (Input.GetKey(moveDown) && !isMoving)
+            {
+                TurnManager.instance.PlayerMadeMove();
                 StartCoroutine(MovePlayer(Vector3.back));
+                Debug.Log(gameData.playerMove);
+                Debug.Log(gameData.playerMaxMove);
+            }
 
             else if (Input.GetKey(moveRight) && !isMoving)
+            {
+                TurnManager.instance.PlayerMadeMove();
                 StartCoroutine(MovePlayer(Vector3.right));
+                Debug.Log(gameData.playerMove);
+                Debug.Log(gameData.playerMaxMove);
+            }
+
         }
     }
 
@@ -69,15 +102,20 @@ public class GridMovement : MonoBehaviour
         if (targetGridPos.x < 0 || targetGridPos.x >= GridManager.instance.GetGridWidth() || 
             targetGridPos.y < 0 || targetGridPos.y >= GridManager.instance.GetGridHeight())  
         {
+            TurnManager.DelayBetweenTurns();
+            gameData.playerMove--;
             isMoving = false;
+            Debug.Log("Tile out of range !");
             yield break;
         }
 
         // Check if the target tile is already occupied
         if (GridManager.instance.IsTileOccupied(targetGridPos))
         {
-            Debug.Log("Tile is already occupied!");
+            TurnManager.DelayBetweenTurns();
+            gameData.playerMove--;
             isMoving = false;
+            Debug.Log("Tile is already occupied !");
             yield break;
         }
 
@@ -105,6 +143,21 @@ public class GridMovement : MonoBehaviour
 
             elapsedTime += Time.deltaTime;
             yield return null;
+
+        }
+
+        // Increase the amount of mmoves made by 1 after a move
+
+        if (gameObject.CompareTag("Player"))
+        {
+
+            if (gameData.playerMove < gameData.playerMaxMove)
+            {
+
+                // Allow the move, then increment playerMove
+                gameData.playerMove++;
+                
+            }
         }
 
         // Update the player's position and mark the new tile as occupied

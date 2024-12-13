@@ -221,6 +221,52 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 905411821}
   m_SourcePrefab: {fileID: 100100000, guid: 89f187d07345fa24fb6ddb1acd717526, type: 3}
+--- !u!1 &237297136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 237297138}
+  - component: {fileID: 237297137}
+  m_Layer: 0
+  m_Name: GameData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &237297137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 237297136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c19f3d82e5c220042b75070da0005a3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerMove: 0
+  playerMaxMove: 1
+--- !u!4 &237297138
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 237297136}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -10.093453, y: -6.6310244, z: 13.314938}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -969,6 +1015,11 @@ PrefabInstance:
       propertyPath: moveRight
       value: 275
       objectReference: {fileID: 0}
+    - target: {fileID: 1834739720945638879, guid: 89f187d07345fa24fb6ddb1acd717526,
+        type: 3}
+      propertyPath: TurnManager
+      value: 
+      objectReference: {fileID: 1978957769}
     - target: {fileID: 7944228815997738537, guid: 89f187d07345fa24fb6ddb1acd717526,
         type: 3}
       propertyPath: m_Name
@@ -1151,6 +1202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a324c95ca41d3ad42a5c7a386403b7ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameData: {fileID: 237297137}
   firstTurn: 0
 --- !u!4 &1978957770
 Transform:
@@ -1398,3 +1450,4 @@ SceneRoots:
   - {fileID: 1280154290}
   - {fileID: 185687072}
   - {fileID: 1193541720}
+  - {fileID: 237297138}

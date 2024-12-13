@@ -15,6 +15,9 @@ public class TurnManager : MonoBehaviour
     private int currentPlayerIndex = 0;
     private int currentEnemyIndex = 0;
 
+    public GameData gameData; // Assign GameData object in ispector
+    private Dictionary<GameObject, int> playerMoves; // Dictionary to track each player's moves
+
     public enum FirstTurn
     {
         Player,
@@ -37,21 +40,44 @@ public class TurnManager : MonoBehaviour
 
     private void Start()
     {
+        if (gameData == null)
+        {
+            gameData = FindObjectOfType<GameData>();
+        }
+
         players = new List<GameObject>(GameObject.FindGameObjectsWithTag("Player"));
         enemies = new List<GameObject>(GameObject.FindGameObjectsWithTag("Enemy"));
 
-        if (firstTurn == FirstTurn.Player)
+        // Initialize player move counts
+        playerMoves = new Dictionary<GameObject, int>();
+        foreach (var player in players)
         {
-            currentTurn = TurnState.PlayerTurn; // Start with the player's turn
+            playerMoves[player] = 0;
         }
-        else if (firstTurn == FirstTurn.Enemy)
+
+        // Set starting turn
+        currentTurn = firstTurn == FirstTurn.Player ? TurnState.PlayerTurn : TurnState.EnemyTurn;
+        if (currentTurn == TurnState.EnemyTurn)
         {
-            currentTurn = TurnState.EnemyTurn;
             StartCoroutine(EnemyTurn());
         }
     }
 
-    // Call this method when the player decides to end their turn (with a button or with the shortcut)
+    public IEnumerator DelayBetweenTurns()
+    {
+        // Wait for 0.5 seconds
+        yield return new WaitForSeconds(0.5f);
+    }
+
+    public IEnumerator SwitchToEnemyTurn()
+    {
+            yield return DelayBetweenTurns(); // Wait before switching turns
+            currentTurn = TurnState.EnemyTurn;
+            StartCoroutine(EnemyTurn());
+    }
+
+
+    // Call this method when the player decides to end their turn
     public void EndPlayerTurn()
     {
         if (currentTurn == TurnState.PlayerTurn)
@@ -59,11 +85,41 @@ public class TurnManager : MonoBehaviour
             currentPlayerIndex++;
             if (currentPlayerIndex >= players.Count)
             {
+
                 currentPlayerIndex = 0;
+
+                // Block player actions and start delayed enemy turn
                 currentTurn = TurnState.EnemyTurn;
-                StartCoroutine(EnemyTurn());
+                StartCoroutine(SwitchToEnemyTurn());
+
+            }
+            else
+            {
+                // Reset move count for the next player
+                playerMoves[players[currentPlayerIndex]] = 0;
             }
         }
+    }
+
+    // Method to check if the current player has remaining moves
+    public bool CanPlayerMove()
+    {
+        GameObject currentPlayer = players[currentPlayerIndex];
+        int maxMoves = gameData.playerMaxMove; // Assuming all players share the same max moves
+        return playerMoves[currentPlayer] < maxMoves;
+    }
+
+    public void PlayerMadeMove()
+    {
+            // Use the gameData instance to access playerMove and playerMaxMove
+        if (gameData.playerMove >= gameData.playerMaxMove-1)
+            {
+
+                // End turn if playerMove is already equal to or exceeds playerMaxMove
+
+                EndPlayerTurn();
+                gameData.playerMove = 0;
+            }
     }
 
     // Call this method ONLY once all enemies have taken their turn
@@ -77,7 +133,6 @@ public class TurnManager : MonoBehaviour
         }
         else
         {
-            // Continue to the next enemy's turn
             StartCoroutine(EnemyTurn());
         }
     }
@@ -94,10 +149,8 @@ public class TurnManager : MonoBehaviour
                 enemyAI.EnemyAI();
             }
 
-            // Impose a delay to give time for the player to understand the enemy movements and prevent a bug
-            yield return new WaitForSeconds(0.5f); // Adjust delay to prevent overlapping on the same tile
+            yield return new WaitForSeconds(0.5f);
 
-            // Once all enemies have moved, end their turn
             EndEnemyTurn();
         }
     }
