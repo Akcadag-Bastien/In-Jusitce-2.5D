@@ -117,8 +117,7 @@ public class TurnManager : MonoBehaviour
 
                 // End turn if playerMove is already equal to or exceeds playerMaxMove
 
-                EndPlayerTurn();
-                gameData.playerMove = 1;
+                gameData.canMove = false;
             }
     }
 

@@ -252,6 +252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMove: 1
   playerMaxMove: 5
+  canMove: 1
 --- !u!4 &237297138
 Transform:
   m_ObjectHideFlags: 0
@@ -625,6 +626,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skip: 101
+  skipThisTurn: 0
+  gameData: {fileID: 237297137}
+  turnManager: {fileID: 1978957769}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0

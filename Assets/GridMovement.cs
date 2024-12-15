@@ -41,7 +41,7 @@ public class GridMovement : MonoBehaviour
             }
 
             // Handle player movement with input
-            if (Input.GetKey(moveUp) && !isMoving)
+            if (Input.GetKey(moveUp) && !isMoving && gameData.playerMove <= gameData.playerMaxMove)
             {
                 StartCoroutine(MovePlayer(Vector3.forward));
                 Debug.Log(gameData.playerMove);
@@ -49,7 +49,7 @@ public class GridMovement : MonoBehaviour
                 TurnManager.instance.PlayerMadeMove();
             }
 
-            else if (Input.GetKey(moveLeft) && !isMoving)
+            else if (Input.GetKey(moveLeft) && !isMoving && gameData.playerMove <= gameData.playerMaxMove)
             {
                 StartCoroutine(MovePlayer(Vector3.left));
                 Debug.Log(gameData.playerMove);
@@ -57,7 +57,7 @@ public class GridMovement : MonoBehaviour
                 TurnManager.instance.PlayerMadeMove();
             }
 
-            else if (Input.GetKey(moveDown) && !isMoving)
+            else if (Input.GetKey(moveDown) && !isMoving && gameData.playerMove <= gameData.playerMaxMove)
             {
                 StartCoroutine(MovePlayer(Vector3.back));
                 Debug.Log(gameData.playerMove);
@@ -65,7 +65,7 @@ public class GridMovement : MonoBehaviour
                 TurnManager.instance.PlayerMadeMove();
             }
 
-            else if (Input.GetKey(moveRight) && !isMoving)
+            else if (Input.GetKey(moveRight) && !isMoving && gameData.playerMove <= gameData.playerMaxMove)
             {
                 StartCoroutine(MovePlayer(Vector3.right));
                 Debug.Log(gameData.playerMove);
@@ -149,13 +149,9 @@ public class GridMovement : MonoBehaviour
         if (gameObject.CompareTag("Player"))
         {
 
-            if (gameData.playerMove < gameData.playerMaxMove)
-            {
+            // Allow the move, then increment playerMove
+            gameData.playerMove++;
 
-                // Allow the move, then increment playerMove
-                gameData.playerMove++;
-                
-            }
         }
         else
         {
