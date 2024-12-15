@@ -1,17 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; // Needed to detect the Button variable as valid
 
 public class SkipTurn : MonoBehaviour
 {
-    [SerializeField] KeyCode skip = KeyCode.E;
-    private GridMovement gridMovement; // Reference to the GridMovement script
-
+    public KeyCode skip; // Assign this in the Inspector
+    public Button skipButton; // Assign the Button in the Inspector
+    public GridMovement gridMovement; // Reference to the GridMovement script
+    public GameData gameData; // Reference to the GameData script
+    public TurnManager turnManager; // Reference to the TurnManager script
     public bool skipThisTurn = false;
-
-    public GameData gameData; // Assign GameData object in ispector
-
-    public TurnManager turnManager; // Assign TurnManager object in inspector
 
     void Start()
     {
@@ -22,7 +21,19 @@ public class SkipTurn : MonoBehaviour
     void Update()
     {
         // Ensure gridMovement is not null
-        if (gridMovement != null && Input.GetKey(skip) && !gridMovement.isMoving) // Use IsMoving instead of accessing it directly
+        if (Input.GetKey(skip))
+        {
+            SkipPlayerTurn();
+        }
+
+        skipButton.onClick.AddListener(SkipPlayerTurn);
+    }
+
+    // Skip the player's turn when called
+
+    void SkipPlayerTurn()
+    {
+        if (gridMovement != null && !gridMovement.isMoving)
         {
             skipThisTurn = false;
             gameData.canMove = true;
