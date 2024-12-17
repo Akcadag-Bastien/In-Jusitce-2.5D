@@ -3,7 +3,9 @@ guid: 3f105a2d99b71274ab502c37bcade0d1
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - tilePrefab: {fileID: 2455538910776398088, guid: 2d8191f3ad6ca2e4895ba5525900a1f2,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

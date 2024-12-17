@@ -1591,6 +1591,39 @@ PrefabInstance:
       propertyPath: tileSpacing
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 757046182973416830, guid: 31765684ec16d624dadcc2550962e154,
+        type: 3}
+      propertyPath: tiles.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 757046182973416830, guid: 31765684ec16d624dadcc2550962e154,
+        type: 3}
+      propertyPath: tiles.Array.data[0].prefab
+      value: 
+      objectReference: {fileID: 2455538910776398088, guid: 2d8191f3ad6ca2e4895ba5525900a1f2,
+        type: 3}
+    - target: {fileID: 757046182973416830, guid: 31765684ec16d624dadcc2550962e154,
+        type: 3}
+      propertyPath: tiles.Array.data[1].prefab
+      value: 
+      objectReference: {fileID: 1075811490985036584, guid: f3d802235e30e8840b64415e88cbd2fb,
+        type: 3}
+    - target: {fileID: 757046182973416830, guid: 31765684ec16d624dadcc2550962e154,
+        type: 3}
+      propertyPath: tiles.Array.data[2].prefab
+      value: 
+      objectReference: {fileID: 6099850053202739518, guid: 7f1bbc79c38a3774e97fab91447c636f,
+        type: 3}
+    - target: {fileID: 757046182973416830, guid: 31765684ec16d624dadcc2550962e154,
+        type: 3}
+      propertyPath: tiles.Array.data[0].condition
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 757046182973416830, guid: 31765684ec16d624dadcc2550962e154,
+        type: 3}
+      propertyPath: tiles.Array.data[2].condition
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2002846067558781650, guid: 31765684ec16d624dadcc2550962e154,
         type: 3}
       propertyPath: m_Name
