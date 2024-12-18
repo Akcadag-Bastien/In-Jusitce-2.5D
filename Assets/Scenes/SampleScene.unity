@@ -302,7 +302,6 @@ GameObject:
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
   - component: {fileID: 330585549}
-  - component: {fileID: 330585550}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -452,22 +451,6 @@ Skybox:
   m_GameObject: {fileID: 330585543}
   m_Enabled: 1
   m_CustomSkybox: {fileID: 2100000, guid: b8ed71566e739f649af26ceb4c301778, type: 2}
---- !u!114 &330585550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330585543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 898e25f922de2e040b7986fc9c12b5a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skyboxMaterial: {fileID: 2100000, guid: b8ed71566e739f649af26ceb4c301778, type: 2}
-  spriteSheet: {fileID: 2800000, guid: be6e94a13888bf141af678025cf50bae, type: 3}
-  totalRows: 7
-  cycleSpeed: 0.1
 --- !u!1 &406050718
 GameObject:
   m_ObjectHideFlags: 0
@@ -1151,6 +1134,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1311514618404797125, guid: 89f187d07345fa24fb6ddb1acd717526,
         type: 3}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1311514618404797125, guid: 89f187d07345fa24fb6ddb1acd717526,
+        type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -1862725709, guid: 79752aa69b4575c4389df56225340b75,
@@ -1248,6 +1236,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 566401754875935598, guid: 89f187d07345fa24fb6ddb1acd717526,
+        type: 3}
+      propertyPath: totalRows
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 566401754875935598, guid: 89f187d07345fa24fb6ddb1acd717526,
+        type: 3}
+      propertyPath: spriteSheet
+      value: 
+      objectReference: {fileID: 2800000, guid: fc999f7076b141f40afd55e00487b1df, type: 3}
     - target: {fileID: 1275996096913162961, guid: 89f187d07345fa24fb6ddb1acd717526,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1302,17 +1300,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: caab31906f7495544a0b28ebd42d7418,
+      objectReference: {fileID: 1278455439, guid: fc999f7076b141f40afd55e00487b1df,
         type: 3}
     - target: {fileID: 1311514618404797125, guid: 89f187d07345fa24fb6ddb1acd717526,
         type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1311514618404797125, guid: 89f187d07345fa24fb6ddb1acd717526,
         type: 3}
       propertyPath: m_Color.g
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1311514618404797125, guid: 89f187d07345fa24fb6ddb1acd717526,
         type: 3}
@@ -1544,6 +1542,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 566401754875935598, guid: 89f187d07345fa24fb6ddb1acd717526,
+        type: 3}
+      propertyPath: totalRows
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 566401754875935598, guid: 89f187d07345fa24fb6ddb1acd717526,
+        type: 3}
+      propertyPath: spriteSheet
+      value: 
+      objectReference: {fileID: 2800000, guid: fc999f7076b141f40afd55e00487b1df, type: 3}
     - target: {fileID: 1275996096913162961, guid: 89f187d07345fa24fb6ddb1acd717526,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1596,19 +1604,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1311514618404797125, guid: 89f187d07345fa24fb6ddb1acd717526,
         type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1311514618404797125, guid: 89f187d07345fa24fb6ddb1acd717526,
+        type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: caab31906f7495544a0b28ebd42d7418,
+      objectReference: {fileID: 1278455439, guid: fc999f7076b141f40afd55e00487b1df,
         type: 3}
     - target: {fileID: 1311514618404797125, guid: 89f187d07345fa24fb6ddb1acd717526,
         type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1311514618404797125, guid: 89f187d07345fa24fb6ddb1acd717526,
         type: 3}
       propertyPath: m_Color.g
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1311514618404797125, guid: 89f187d07345fa24fb6ddb1acd717526,
         type: 3}
