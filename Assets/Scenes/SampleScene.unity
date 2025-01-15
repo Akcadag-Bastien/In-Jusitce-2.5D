@@ -677,6 +677,22 @@ MonoBehaviour:
   gameData: {fileID: 237297137}
   turnManager: {fileID: 1978957769}
   skipThisTurn: 0
+--- !u!114 &432175329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432175322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 756db1086f73ddf4898ca4365c0445e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shoot: 32
+  prefab: {fileID: 5465811405640662562, guid: 133db310e38228942aed19f0ae976bec, type: 3}
+  TurnManager: {fileID: 1978957769}
+  player: {fileID: 432175322}
 --- !u!1 &504479878 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7944228815997738537, guid: 89f187d07345fa24fb6ddb1acd717526,
@@ -1243,6 +1259,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 432175323}
+    - targetCorrespondingSourceObject: {fileID: 7944228815997738537, guid: 89f187d07345fa24fb6ddb1acd717526,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 432175329}
   m_SourcePrefab: {fileID: 100100000, guid: 89f187d07345fa24fb6ddb1acd717526, type: 3}
 --- !u!1001 &1708224741
 PrefabInstance:
@@ -1540,6 +1560,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameData: {fileID: 237297137}
   firstTurn: 0
+  HasShot: 0
 --- !u!4 &1978957770
 Transform:
   m_ObjectHideFlags: 0

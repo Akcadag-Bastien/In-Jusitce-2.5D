@@ -8,10 +8,11 @@ public class GridManager : MonoBehaviour
     // Create a new class to circumvent the single-type array limitation of C#
 
     [System.Serializable]
+
     public class TileData
     {
-    public GameObject prefab;
-    public TileCondition condition; // Use enum instead of bool
+        public GameObject prefab;
+        public TileCondition condition; // Use enum instead of bool
     }
 
     public enum TileCondition // Add conditions for custom tiles to spawn

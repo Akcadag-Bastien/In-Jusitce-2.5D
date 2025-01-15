@@ -22,9 +22,11 @@ public class TurnManager : MonoBehaviour
     {
         Player,
         Enemy
-    }
+    };
 
     [SerializeField] private FirstTurn firstTurn; // Declare a variable to store the starting turn
+
+    public bool HasShot = false;
 
     private void Awake()
     {
@@ -61,6 +63,8 @@ public class TurnManager : MonoBehaviour
         {
             StartCoroutine(EnemyTurn());
         }
+
+        HasShot = false;
     }
 
     public IEnumerator DelayBetweenTurns()
@@ -99,6 +103,8 @@ public class TurnManager : MonoBehaviour
                 playerMoves[players[currentPlayerIndex]] = 0;
             }
         }
+        
+        HasShot = false;
     }
 
     // Method to check if the current player has remaining moves
