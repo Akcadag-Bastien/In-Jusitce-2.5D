@@ -13,7 +13,7 @@ public class Shoot : MonoBehaviour
 
     public GameObject player;
 
-    public transform newposition;
+    public Transform newposition;
 
     // Start is called before the first frame update
     void Start()
