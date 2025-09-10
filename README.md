@@ -1,2 +1,2 @@
 # In-Jusitce
- A game I'm working on...
+ A small game I'm working on !
