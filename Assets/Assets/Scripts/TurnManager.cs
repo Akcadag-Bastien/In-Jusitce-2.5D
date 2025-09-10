@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class TurnManager : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class TurnManager : MonoBehaviour
 
     public GameData gameData; // Assign GameData object in ispector
     private Dictionary<GameObject, int> playerMoves; // Dictionary to track each player's moves
+
+    public int turnNumber = 1;
+    public TMP_Text turnDisplayUI;
 
     public enum FirstTurn
     {
@@ -65,6 +69,8 @@ public class TurnManager : MonoBehaviour
         }
 
         HasShot = false;
+
+        UpdateTurnDisplay();
     }
 
     public IEnumerator DelayBetweenTurns()
@@ -86,6 +92,7 @@ public class TurnManager : MonoBehaviour
     {
         if (currentTurn == TurnState.PlayerTurn)
         {
+
             currentPlayerIndex++;
             if (currentPlayerIndex >= players.Count)
             {
@@ -105,6 +112,11 @@ public class TurnManager : MonoBehaviour
         }
         
         HasShot = false;
+    }
+
+    void UpdateTurnDisplay()
+    {
+        turnDisplayUI.text = "Turn: " + turnNumber;
     }
 
     // Method to check if the current player has remaining moves
@@ -135,6 +147,10 @@ public class TurnManager : MonoBehaviour
         {
             currentEnemyIndex = 0;
             currentTurn = TurnState.PlayerTurn;
+
+            turnNumber += 1;
+            UpdateTurnDisplay();
+            Debug.Log("Turn number = " + turnNumber);
         }
         else
         {

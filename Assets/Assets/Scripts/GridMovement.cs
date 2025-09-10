@@ -25,6 +25,10 @@ public class GridMovement : MonoBehaviour
             gameData = FindObjectOfType<GameData>();
         }
 
+        GameObject cameraManager = GameObject.Find("CameraManager");
+        CameraCycle cameraCycle = GameObject.Find("CameraManager").GetComponent<CameraCycle>();
+        Debug.Log("Current camera : " + cameraCycle.currentCamera);
+
         // Mark the initial position as occupied when the game starts
         Vector2 gridPosition = new Vector2(Mathf.Floor(transform.position.x), Mathf.Floor(transform.position.z));
         GridManager.instance.OccupyTile(gridPosition, this.gameObject);
@@ -121,10 +125,15 @@ public class GridMovement : MonoBehaviour
         GridManager.instance.FreeTile(origGridPos);
 
         // Get reference to CameraFollow
-        CameraFollow cameraFollow = Camera.main.GetComponent<CameraFollow>();
+        CameraFollow cameraFollow = null;
+        if (Camera.main != null)
+        {
+            cameraFollow = Camera.main.GetComponent<CameraFollow>();
+        }
+
+        // Only set target and follow if cameraFollow exists
         if (cameraFollow != null)
         {
-            // Update the target to the moving character
             cameraFollow.SetTarget(transform);
         }
 
