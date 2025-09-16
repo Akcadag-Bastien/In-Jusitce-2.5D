@@ -39,6 +39,7 @@ public class GridMovement : MonoBehaviour
         if (isPlayer)
         {
             // Only allow player movement during the player's turn
+            
             if (!TurnManager.instance.IsPlayerTurn()) 
             {
                 return;
