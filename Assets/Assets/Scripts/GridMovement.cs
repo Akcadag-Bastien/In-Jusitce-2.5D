@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +7,8 @@ public class GridMovement : MonoBehaviour
     public bool isMoving;
     private Vector3 origPos, targetPos;
     private float timeToMove = 0.2f;
+    private Vector2 currentGridPos;
+    private bool hasOccupiedTile;
 
     [SerializeField] KeyCode moveUp = KeyCode.W;
     [SerializeField] KeyCode moveLeft = KeyCode.A;
@@ -32,6 +34,8 @@ public class GridMovement : MonoBehaviour
         // Mark the initial position as occupied when the game starts
         Vector2 gridPosition = new Vector2(Mathf.Floor(transform.position.x), Mathf.Floor(transform.position.z));
         GridManager.instance.OccupyTile(gridPosition, this.gameObject);
+        currentGridPos = gridPosition;
+        hasOccupiedTile = true;
     }
 
     void Update()
@@ -90,7 +94,7 @@ public class GridMovement : MonoBehaviour
         }
     }
 
-    public IEnumerator MovePlayer(Vector3 direction)
+    public IEnumerator MovePlayer(Vector3 direction, bool ignoreOccupied = false)
     {
         isMoving = true;
 
@@ -102,21 +106,24 @@ public class GridMovement : MonoBehaviour
         // Convert positions to grid coordinates
         Vector2 origGridPos = new Vector2(Mathf.Floor(origPos.x), Mathf.Floor(origPos.z));
         Vector2 targetGridPos = new Vector2(Mathf.Floor(targetPos.x), Mathf.Floor(targetPos.z));
+        currentGridPos = origGridPos;
 
         // Check if the target position is within grid boundaries
         if (targetGridPos.x < 0 || targetGridPos.x >= GridManager.instance.GetGridWidth() || 
             targetGridPos.y < 0 || targetGridPos.y >= GridManager.instance.GetGridHeight())  
         {
-            TurnManager.DelayBetweenTurns();
+            TurnManager.Delay();
             isMoving = false;
             Debug.Log("Tile out of range !");
             yield break;
         }
 
+        bool targetOccupied = GridManager.instance.IsTileOccupied(targetGridPos);
+
         // Check if the target tile is already occupied
-        if (GridManager.instance.IsTileOccupied(targetGridPos))
+        if (targetOccupied && !ignoreOccupied)
         {
-            TurnManager.DelayBetweenTurns();
+            TurnManager.Delay();
             isMoving = false;
             Debug.Log("Tile is already occupied !");
             yield break;
@@ -124,6 +131,7 @@ public class GridMovement : MonoBehaviour
 
         // Free the current tile before moving
         GridManager.instance.FreeTile(origGridPos);
+        hasOccupiedTile = false;
 
         // Get reference to CameraFollow
         CameraFollow cameraFollow = null;
@@ -154,24 +162,55 @@ public class GridMovement : MonoBehaviour
 
         }
 
-        // Increase the amount of mmoves made by 1 after a move
-
-        if (gameObject.CompareTag("Player"))
+        // Increase the amount of moves made by 1 after a move
+        if (isPlayer)
         {
-
-            // Allow the move, then increment playerMove
-            gameData.playerMove++;
-
+            if (gameData != null)
+            {
+                gameData.playerMove++;
+            }
         }
-        else
+        else if (!CompareTag("Projectile"))
         {
-            gameData.playerMove = 1;
+            if (gameData != null)
+            {
+                gameData.playerMove = 1;
+            }
         }
 
-        // Update the player's position and mark the new tile as occupied
+        // Update the entity's position and mark the new tile as occupied
         transform.position = targetPos;
         GridManager.instance.OccupyTile(targetGridPos, this.gameObject);
+        currentGridPos = targetGridPos;
+
+        bool ownsTile = GridManager.instance.GetOccupant(targetGridPos) == this.gameObject;
+        hasOccupiedTile = ownsTile;
 
         isMoving = false;
+    }
+
+    public void ClaimCurrentTile()
+    {
+        if (GridManager.instance == null)
+        {
+            return;
+        }
+
+        GridManager.instance.OccupyTile(currentGridPos, this.gameObject);
+        if (GridManager.instance.GetOccupant(currentGridPos) == this.gameObject)
+        {
+            hasOccupiedTile = true;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (GridManager.instance == null || !hasOccupiedTile)
+        {
+            return;
+        }
+
+        GridManager.instance.FreeTile(currentGridPos);
+        hasOccupiedTile = false;
     }
 }

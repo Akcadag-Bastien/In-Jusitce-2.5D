@@ -30,7 +30,10 @@ public class Shoot : MonoBehaviour
             if (TurnManager.HasShot == false)
             {
 
-                Instantiate(prefab, player.transform.position, Quaternion.identity);
+                GameObject newProjectile = Instantiate(prefab, player.transform.position, Quaternion.identity);
+
+                newProjectile.tag = "Projectile";
+
                 TurnManager.HasShot = true;
             }
 

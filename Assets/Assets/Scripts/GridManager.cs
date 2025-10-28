@@ -99,6 +99,13 @@ public class GridManager : MonoBehaviour
         return occupiedTiles.ContainsKey(position);
     }
 
+    // Retrieve the GameObject currently occupying the tile, or null if empty
+    public GameObject GetOccupant(Vector3 position)
+    {
+        occupiedTiles.TryGetValue(position, out GameObject occupier);
+        return occupier;
+    }
+
     // Mark a position as occupied
     public void OccupyTile(Vector3 position, GameObject occupier)  // Updated to use Vector3
     {
