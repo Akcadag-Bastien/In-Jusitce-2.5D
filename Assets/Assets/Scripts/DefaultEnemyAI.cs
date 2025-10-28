@@ -74,24 +74,22 @@ public class DefaultEnemyAI : MonoBehaviour
             yield break;
         }
 
-        yield return gridMovement.MovePlayer(direction, ignoreOccupied: true);
+        GridManager gm = GridManager.instance;
 
-        Vector2 landingGrid = new Vector2(Mathf.Floor(transform.position.x), Mathf.Floor(transform.position.z));
+        Vector2 startGrid = new Vector2(Mathf.Floor(transform.position.x), Mathf.Floor(transform.position.z));
+        Vector2 targetGrid = startGrid + new Vector2(direction.x, direction.z);
+
+        if (gm != null)
+        {
+            gm.FreeTile(targetGrid);
+        }
 
         if (projectile != null)
         {
             Destroy(projectile);
         }
 
-        if (GridManager.instance != null)
-        {
-            if (GridManager.instance.IsTileOccupied(landingGrid))
-            {
-                GridManager.instance.FreeTile(landingGrid);
-            }
-        }
-
-        gridMovement.ClaimCurrentTile();
+        yield return gridMovement.MovePlayer(direction);
     }
 
     private bool IsProjectile(GameObject obj)

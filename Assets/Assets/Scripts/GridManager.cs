@@ -96,23 +96,51 @@ public class GridManager : MonoBehaviour
     // Check if a position is occupied
     public bool IsTileOccupied(Vector3 position)  // Updated to use Vector3
     {
-        return occupiedTiles.ContainsKey(position);
+        if (occupiedTiles.TryGetValue(position, out GameObject occupier))
+        {
+            if (occupier == null)
+            {
+                occupiedTiles.Remove(position);
+                return false;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     // Retrieve the GameObject currently occupying the tile, or null if empty
     public GameObject GetOccupant(Vector3 position)
     {
-        occupiedTiles.TryGetValue(position, out GameObject occupier);
-        return occupier;
+        if (occupiedTiles.TryGetValue(position, out GameObject occupier))
+        {
+            if (occupier == null)
+            {
+                occupiedTiles.Remove(position);
+                return null;
+            }
+
+            return occupier;
+        }
+
+        return null;
     }
 
     // Mark a position as occupied
     public void OccupyTile(Vector3 position, GameObject occupier)  // Updated to use Vector3
     {
-        if (!occupiedTiles.ContainsKey(position))
+        if (occupiedTiles.TryGetValue(position, out GameObject current))
         {
-            occupiedTiles.Add(position, occupier);
+            if (current == null || current == occupier)
+            {
+                occupiedTiles[position] = occupier;
+            }
+
+            return;
         }
+
+        occupiedTiles[position] = occupier;
     }
 
     // Free a tile when a character moves away
