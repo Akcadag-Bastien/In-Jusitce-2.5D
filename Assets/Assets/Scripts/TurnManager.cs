@@ -31,8 +31,12 @@ public class TurnManager : MonoBehaviour
     };
 
     [SerializeField] private FirstTurn firstTurn; // who starts
+    [SerializeField] private float basePhaseDelay = 0.2f;
+    [SerializeField] private float cameraCatchupTimeout = 2f;
 
     public bool HasShot = false;
+
+    private CameraFollow cameraFollow;
 
     private void Awake()
     {
@@ -43,6 +47,7 @@ public class TurnManager : MonoBehaviour
     private void Start()
     {
         if (gameData == null) gameData = FindObjectOfType<GameData>();
+        cameraFollow = CameraFollow.GetActiveCameraFollow();
 
         RefreshSceneLists();
 
@@ -73,7 +78,12 @@ public class TurnManager : MonoBehaviour
 
     public IEnumerator Delay()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return WaitForCamera();
+
+        if (basePhaseDelay > 0f)
+        {
+            yield return new WaitForSeconds(basePhaseDelay);
+        }
     }
 
     public IEnumerator SwitchToEnemyTurn()
@@ -206,6 +216,7 @@ public class TurnManager : MonoBehaviour
 
             if (enemyAI != null)
             {
+                yield return FocusCameraAndWait(enemy.transform);
                 enemyAI.EnemyAI();
             }
 
@@ -253,6 +264,7 @@ public class TurnManager : MonoBehaviour
 
             if (projAI != null)
             {
+                yield return FocusCameraAndWait(proj.transform);
                 // Execute projectile logic for this "turn"
                 projAI.ProjectileAI();
             }
@@ -272,4 +284,45 @@ public class TurnManager : MonoBehaviour
     public bool IsPlayerTurn()     => currentTurn == TurnState.PlayerTurn;
     public bool IsEnemyTurn()      => currentTurn == TurnState.EnemyTurn;
     public bool IsProjectileTurn() => currentTurn == TurnState.ProjectileTurn;
+
+    private IEnumerator WaitForCamera()
+    {
+        if (cameraFollow == null || !cameraFollow.isActiveAndEnabled)
+        {
+            cameraFollow = CameraFollow.GetActiveCameraFollow();
+        }
+
+        if (cameraFollow == null)
+        {
+            yield break;
+        }
+
+        float waited = 0f;
+        while (!cameraFollow.HasArrived && waited < cameraCatchupTimeout)
+        {
+            waited += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    private IEnumerator FocusCameraAndWait(Transform focus)
+    {
+        if (focus == null)
+        {
+            yield break;
+        }
+
+        if (cameraFollow == null || !cameraFollow.isActiveAndEnabled)
+        {
+            cameraFollow = CameraFollow.GetActiveCameraFollow();
+        }
+
+        if (cameraFollow == null)
+        {
+            yield break;
+        }
+
+        cameraFollow.SetTarget(focus);
+        yield return WaitForCamera();
+    }
 }

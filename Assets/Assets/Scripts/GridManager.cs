@@ -37,6 +37,7 @@ public class GridManager : MonoBehaviour
 
     // Dictionary to track occupied positions
     private Dictionary<Vector3, GameObject> occupiedTiles = new Dictionary<Vector3, GameObject>(); // Updated to use Vector3
+    private readonly List<GameObject> spawnedTiles = new List<GameObject>();
 
     private void Awake()
     {
@@ -68,12 +69,63 @@ public class GridManager : MonoBehaviour
                 {
                     if (EvaluateCondition(tile.condition, z))
                     {
-                        Instantiate(tile.prefab, tilePosition, tileRotation);
+                        var spawnedTile = Instantiate(tile.prefab, tilePosition, tileRotation);
+                        spawnedTiles.Add(spawnedTile);
                         break;
                     }
                 }
             }
         }
+    }
+
+    private void ClearGrid()
+    {
+        foreach (var tile in spawnedTiles)
+        {
+            if (tile != null)
+            {
+                Destroy(tile);
+            }
+        }
+
+        spawnedTiles.Clear();
+        occupiedTiles.Clear();
+    }
+
+    public void RebuildGrid()
+    {
+        ClearGrid();
+        GenerateGrid();
+    }
+
+    public void AdjustGridSize(int widthDelta, int heightDelta)
+    {
+        int newWidth = Mathf.Max(1, gridWidth + widthDelta);
+        int newHeight = Mathf.Max(1, gridHeight + heightDelta);
+
+        if (newWidth == gridWidth && newHeight == gridHeight)
+        {
+            return;
+        }
+
+        gridWidth = newWidth;
+        gridHeight = newHeight;
+        RebuildGrid();
+    }
+
+    public void OverrideGridSize(int width, int height)
+    {
+        width = Mathf.Max(1, width);
+        height = Mathf.Max(1, height);
+
+        if (width == gridWidth && height == gridHeight)
+        {
+            return;
+        }
+
+        gridWidth = width;
+        gridHeight = height;
+        RebuildGrid();
     }
 
     private bool EvaluateCondition(TileCondition condition, int z) // Checks whether the tile is special or not 

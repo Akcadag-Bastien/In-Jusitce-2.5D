@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LookAtCamera : MonoBehaviour
 {
-    private Camera mainCamera;
+    [SerializeField] private Camera mainCamera;
 
     // Start is called before the first frame update
     void Start()
@@ -17,8 +17,12 @@ public class LookAtCamera : MonoBehaviour
     {
         if (mainCamera != null)
         {
-            // Align the sprite's forward direction with the opposite of the camera's forward vector
-            transform.forward = -mainCamera.transform.forward;
+            // Face the actual camera position so sprites subtly swivel as the camera moves
+            Vector3 directionToCamera = mainCamera.transform.position - transform.position;
+            if (directionToCamera.sqrMagnitude > 0.0001f)
+            {
+                transform.forward = directionToCamera.normalized;
+            }
         }
     }
 }
