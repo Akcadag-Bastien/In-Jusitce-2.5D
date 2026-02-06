@@ -8,6 +8,8 @@ public class DefaultProjectileAI : MonoBehaviour
 [Tooltip("World/grid step applied each projectile phase.")]
 [SerializeField] private Vector3 direction = Vector3.forward;
 
+[SerializeField] public int projectileDamage = 10;
+
     private GridMovement gridMovement;
     private GridManager gridManager;
 
@@ -80,7 +82,29 @@ public class DefaultProjectileAI : MonoBehaviour
         // If someone else still owns this tile, projectile dies
         if (occupant != null && occupant != gameObject)
         {
+
+            // If the thing that owns the tile it's moving to is an enemy or a player, the target takes 10 damage.
+            if (occupant.CompareTag("Enemy") == true || occupant.CompareTag("Player"))
+            {
+                Debug.LogWarning("projectile hit an enemy or a player");
+                var stats = occupant.GetComponent<CharacterStats>();
+                if (stats != null)
+                {
+                    DamageUtilities.DamageTarget(new CharacterStats[] { stats }, projectileDamage);
+                }
+                else
+                {
+                    Debug.LogWarning($"{occupant.name} missing CharacterStats component.");
+                }
+            }
+
+
+            // destroy the projectile
             Destroy(gameObject);
+            
+            
+
+
         }
     }
 }

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; // Needed to detect the Button variable as valid
+using UnityEngine.EventSystems;
 
 public class CameraCycle : MonoBehaviour
 {
@@ -27,7 +29,7 @@ public class CameraCycle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             // Disable current camera
             cameras[currentCamera].enabled = false;

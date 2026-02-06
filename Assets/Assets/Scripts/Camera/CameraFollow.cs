@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
+
+    [SerializeField] private Vector3 startingposition;
+
     [Header("Follow Settings")]
     public float zoom = 1f;
     public Transform target;
@@ -17,14 +20,14 @@ public class CameraFollow : MonoBehaviour
     [Tooltip("How close (in units) the camera must be to consider itself caught up.")]
     [SerializeField] private float alignmentThreshold = 0.05f;
 
-    private Vector3 offset => new Vector3(zoom, zoom, -zoom);
+    [SerializeField] private Vector3 offset => new Vector3(zoom, zoom, -zoom*1.5f);
     private Vector3 followVelocity;
     private int lastAppliedFrame = -1;
     private Vector3 desiredPosition;
 
     private void Start()
     {
-        transform.position = new Vector3(2, 4, -3);
+        transform.position = startingposition;
     }
 
     private void LateUpdate()

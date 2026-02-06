@@ -86,10 +86,22 @@ public class DefaultEnemyAI : MonoBehaviour
 
         if (projectile != null)
         {
-            Destroy(projectile);
+
+            var projectileAI = projectile.GetComponent<DefaultProjectileAI>();
+            var stats = this.GetComponent<CharacterStats>();
+            if (projectileAI != null)
+            {
+                DamageUtilities.DamageTarget(new CharacterStats[] { stats }, projectileAI.projectileDamage);
+            }
+            else
+            {
+                Debug.LogWarning($"{this.name} missing CharacterStats component.");
+            }
         }
 
         yield return gridMovement.MovePlayer(direction);
+
+        Destroy(projectile);
     }
 
     private bool IsProjectile(GameObject obj)

@@ -13,7 +13,7 @@ public class OverworldPlayerController : MonoBehaviour
     {
         body = GetComponent<Rigidbody>();
         body.useGravity = false;
-        body.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
+        body.constraints = RigidbodyConstraints.FreezePositionY;
     }
 
     private void FixedUpdate()
